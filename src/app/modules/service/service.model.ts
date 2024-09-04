@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { TService } from "./service.interface";
+import { ServiceModel, TService } from "./service.interface";
 
-const serviceSchema = new Schema<TService>({
+const serviceSchema = new Schema<TService, ServiceModel>({
   name: {
     type: String,
     required: true,
@@ -24,4 +24,8 @@ const serviceSchema = new Schema<TService>({
   },
 });
 
-export const Service = model<TService>("service", serviceSchema);
+serviceSchema.static("isServiceExists", async function (id: string) {
+  return await Service.findById(id);
+});
+
+export const Service = model<TService, ServiceModel>("service", serviceSchema);

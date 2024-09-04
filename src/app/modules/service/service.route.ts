@@ -21,4 +21,6 @@ router.put(
   serviceControllers.handleUpdateService
 );
 
+router.delete("/:id", serviceControllers.handleDeleteService);
+
 export const serviceRoutes = router;

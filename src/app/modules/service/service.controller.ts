@@ -49,9 +49,22 @@ const handleUpdateService = catchAsync(async (req, res) => {
   });
 });
 
+const handleDeleteService = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await serviceServices.deleteService(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Service deleted successfully",
+    data: result,
+  });
+});
+
 export const serviceControllers = {
   handleCreateService,
   handleGetSingleService,
   handleGetAllServices,
   handleUpdateService,
+  handleDeleteService,
 };
