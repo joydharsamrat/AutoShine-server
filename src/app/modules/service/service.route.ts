@@ -7,12 +7,18 @@ const router = express.Router();
 
 router.post(
   "/",
-  validateRequest(serviceValidationSchemas.serviceValidationSchema),
+  validateRequest(serviceValidationSchemas.createServiceValidationSchema),
   serviceControllers.handleCreateService
 );
 
 router.get("/:id", serviceControllers.handleGetSingleService);
 
 router.get("/", serviceControllers.handleGetAllServices);
+
+router.put(
+  "/:id",
+  validateRequest(serviceValidationSchemas.updateServiceValidationSchema),
+  serviceControllers.handleUpdateService
+);
 
 export const serviceRoutes = router;

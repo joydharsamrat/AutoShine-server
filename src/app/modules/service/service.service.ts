@@ -16,8 +16,18 @@ const getAllServices = async () => {
   return result;
 };
 
+const updateService = async (id: string, payLoad: Partial<TService>) => {
+  const result = await Service.findByIdAndUpdate(
+    id,
+    { $set: { ...payLoad } },
+    { new: true }
+  );
+  return result;
+};
+
 export const serviceServices = {
   createService,
   getSingleService,
   getAllServices,
+  updateService,
 };

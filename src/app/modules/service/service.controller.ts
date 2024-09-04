@@ -32,7 +32,19 @@ const handleGetAllServices = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service retrieved successfully",
+    message: "Services retrieved successfully",
+    data: result,
+  });
+});
+
+const handleUpdateService = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await serviceServices.updateService(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Service updated successfully",
     data: result,
   });
 });
@@ -41,4 +53,5 @@ export const serviceControllers = {
   handleCreateService,
   handleGetSingleService,
   handleGetAllServices,
+  handleUpdateService,
 };
