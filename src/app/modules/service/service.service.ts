@@ -6,6 +6,18 @@ const createService = async (payLoad: TService) => {
   return result;
 };
 
+const getSingleService = async (id: string) => {
+  const result = await Service.findById(id);
+  return result;
+};
+
+const getAllServices = async () => {
+  const result = await Service.find();
+  return result;
+};
+
 export const serviceServices = {
   createService,
+  getSingleService,
+  getAllServices,
 };
