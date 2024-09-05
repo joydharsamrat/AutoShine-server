@@ -61,10 +61,22 @@ const handleDeleteService = catchAsync(async (req, res) => {
   });
 });
 
+const handleCreateSlots = catchAsync(async (req, res) => {
+  const result = await serviceServices.createSlots(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Slots created successfully",
+    data: result,
+  });
+});
+
 export const serviceControllers = {
   handleCreateService,
   handleGetSingleService,
   handleGetAllServices,
   handleUpdateService,
   handleDeleteService,
+  handleCreateSlots,
 };

@@ -2,6 +2,7 @@ import express from "express";
 import validateRequest from "../../middlewares/validateRequest";
 import { serviceValidationSchemas } from "./service.validation";
 import { serviceControllers } from "./service.controller";
+import { slotValidationSchemas } from "../slots/slots.validation";
 
 const router = express.Router();
 
@@ -22,5 +23,11 @@ router.put(
 );
 
 router.delete("/:id", serviceControllers.handleDeleteService);
+
+router.post(
+  "/slots",
+  validateRequest(slotValidationSchemas.slotValidationSchema),
+  serviceControllers.handleCreateSlots
+);
 
 export const serviceRoutes = router;
