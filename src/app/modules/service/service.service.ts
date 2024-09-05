@@ -90,7 +90,7 @@ const createSlots = async (payLoad: TSlots) => {
 
   const startMin = timeToMinutes(payLoad.startTime);
   const endMin = timeToMinutes(payLoad.endTime);
-  const slotsCount = (endMin - startMin) / service.duration;
+  const slotsCount = Math.floor((endMin - startMin) / service.duration);
 
   const slots = generateSlots(
     slotsCount,

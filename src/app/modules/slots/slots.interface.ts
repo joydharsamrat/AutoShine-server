@@ -5,4 +5,5 @@ export type TSlots = {
   date: string;
   startTime: string;
   endTime: string;
+  isBooked: "available" | "booked" | "canceled";
 };
