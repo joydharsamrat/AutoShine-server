@@ -32,7 +32,7 @@ const getAllServices = async () => {
 };
 
 const updateService = async (id: string, payLoad: Partial<TService>) => {
-  const service = await Service.isServiceExists(id);
+  const service = await Service.findById(id);
 
   if (!service) {
     throw new AppError(httpStatus.NOT_FOUND, "Data not found");
@@ -49,7 +49,7 @@ const updateService = async (id: string, payLoad: Partial<TService>) => {
 };
 
 const deleteService = async (id: string) => {
-  const service = await Service.isServiceExists(id);
+  const service = await Service.findById(id);
 
   if (!service) {
     throw new AppError(httpStatus.NOT_FOUND, "Data not found");
