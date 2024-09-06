@@ -3,6 +3,7 @@ import { authRoutes } from "../modules/auth/auth.route";
 import { serviceRoutes } from "../modules/service/service.route";
 import { slotRoutes } from "../modules/slots/slots.route";
 import { bookingRoutes } from "../modules/booking/booking.route";
+import { myBookingRoutes } from "../modules/my-booking/myBooking.route";
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const moduleRoutes = [
   { path: "/services", route: serviceRoutes },
   { path: "/slots", route: slotRoutes },
   { path: "/bookings", route: bookingRoutes },
+  { path: "/my-bookings", route: myBookingRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

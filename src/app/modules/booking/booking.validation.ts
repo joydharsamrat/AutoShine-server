@@ -9,10 +9,9 @@ const bookingValidationSchema = z.object({
   }),
   vehicleBrand: z.string({ required_error: "Vehicle brand is required" }),
   vehicleModel: z.string({ required_error: "Vehicle model is required" }),
-  manufacturingYear: z
-    .string({ required_error: "Vehicle manufacturing year is required" })
-    .min(4, "Manufacturing year must be 4 characters")
-    .max(4, "Manufacturing year must be 4 characters"),
+  manufacturingYear: z.number({
+    required_error: "Vehicle manufacturing year is required",
+  }),
   registrationPlate: z.string({
     required_error: "Registration plate is required",
   }),

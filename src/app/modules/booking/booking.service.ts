@@ -50,15 +50,21 @@ const createBooking = async (payload: TBooking, user: JwtPayload) => {
 
     const bookingData = { ...payload, customer: userData?._id };
 
-    const result = await Booking.create([bookingData], { session });
+    const [result] = await Booking.create([bookingData], {
+      new: true,
+      session,
+    });
 
-    if (!result.length) {
+    if (!result) {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to book slot");
     }
 
     await session.commitTransaction();
-
-    return result;
+    const booking = await Booking.findById(result._id)
+      .populate("slot")
+      .populate("service")
+      .populate("customer");
+    return booking;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     await session.abortTransaction();
@@ -66,6 +72,15 @@ const createBooking = async (payload: TBooking, user: JwtPayload) => {
   }
 };
 
+const getAllBookings = async () => {
+  const result = await Booking.find()
+    .populate("customer")
+    .populate("service")
+    .populate("slot");
+  return result;
+};
+
 export const bookingServices = {
   createBooking,
+  getAllBookings,
 };

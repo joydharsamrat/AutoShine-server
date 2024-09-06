@@ -13,7 +13,8 @@ const userSignUp = async (payload: TUser) => {
 };
 
 const loginUser = async (payload: TAuth) => {
-  const user = await User.isUserExist(payload.email);
+  const user = await User.findOne({ email: payload.email }).select("+password");
+
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
@@ -37,7 +38,9 @@ const loginUser = async (payload: TAuth) => {
     "1d"
   );
 
-  return token;
+  user.password = "";
+
+  return { token, user };
 };
 
 export const authServices = { userSignUp, loginUser };
