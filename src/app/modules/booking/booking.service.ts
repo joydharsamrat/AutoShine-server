@@ -1,24 +1,30 @@
 import httpStatus from "http-status";
 import AppError from "../../errors/appError";
 import { Service } from "../service/service.model";
-import { TBooking } from "./booking.interface";
+import { TBookingPayload } from "./booking.interface";
 import { Booking } from "./booking.model";
 import { Slot } from "../slots/slots.model";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../user/user.model";
 import { startSession } from "mongoose";
 
-const createBooking = async (payload: TBooking, user: JwtPayload) => {
-  const { service, slot } = payload;
+const createBooking = async (payload: TBookingPayload, user: JwtPayload) => {
+  const { serviceId, slotId, ...rest } = payload;
+
+  const payloadObj = {
+    service: serviceId,
+    slot: slotId,
+    ...rest,
+  };
 
   const userData = await User.findOne({ email: user.email });
 
-  const serviceData = await Service.findById(service);
+  const serviceData = await Service.findById(serviceId);
   if (!serviceData || serviceData.isDeleted === true) {
     throw new AppError(httpStatus.NOT_FOUND, "Service not found");
   }
 
-  const slotData = await Slot.findById(slot);
+  const slotData = await Slot.findById(slotId);
 
   if (!slotData) {
     throw new AppError(httpStatus.NOT_FOUND, "Slot not found");
@@ -37,7 +43,7 @@ const createBooking = async (payload: TBooking, user: JwtPayload) => {
     session.startTransaction();
 
     const bookSlot = await Slot.findByIdAndUpdate(
-      payload.slot,
+      slotId,
       {
         isBooked: "booked",
       },
@@ -48,7 +54,7 @@ const createBooking = async (payload: TBooking, user: JwtPayload) => {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to book slot");
     }
 
-    const bookingData = { ...payload, customer: userData?._id };
+    const bookingData = { ...payloadObj, customer: userData?._id };
 
     const [result] = await Booking.create([bookingData], {
       new: true,
@@ -64,7 +70,7 @@ const createBooking = async (payload: TBooking, user: JwtPayload) => {
       .populate("slot")
       .populate("service")
       .populate("customer");
-    return booking;
+    return { data: booking };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     await session.abortTransaction();
@@ -77,7 +83,7 @@ const getAllBookings = async () => {
     .populate("customer")
     .populate("service")
     .populate("slot");
-  return result;
+  return { data: result };
 };
 
 export const bookingServices = {

@@ -9,7 +9,7 @@ import { TUser } from "../user/user.interface";
 
 const userSignUp = async (payload: TUser) => {
   const result = User.create(payload);
-  return result;
+  return { data: result };
 };
 
 const loginUser = async (payload: TAuth) => {
@@ -40,7 +40,7 @@ const loginUser = async (payload: TAuth) => {
 
   user.password = "";
 
-  return { token, user };
+  return { token, data: user };
 };
 
 export const authServices = { userSignUp, loginUser };

@@ -4,20 +4,20 @@
 
 This package includes the server components of the Car washing booking system application.
 
+**[LIVE LINK](https://car-wash-booking-system-orcin.vercel.app/)**
+
 ## Features
 
-- **User Registration and Authentication:** Secure sign-up and login using JWT.
-- **Service Management:** Admins can create, update, and delete car washing services.
-- **Slot Booking:** Users can book available time slots for their preferred services.
-- **Booking Management:** Admins can view and manage all bookings.
-- **Responsive Design:** The application is fully responsive, providing an optimal experience on both desktop and mobile devices.
-- **Real-time Slot Availability:** Users can see real-time availability of slots.
+- Secure sign-up and login using JWT.
+- Admins can create, update, and delete car washing services.
+- Users can see availability of slots and book available time slots for their preferred services.
+- Admins can view and manage all bookings.
 
 ## Technologies Used
 
-- **Backend:** Node.js, Express.js, Typescript
-- **Authentication:** JWT (JSON Web Tokens)
-- **Database:** MongoDB, Mongoose
+- Backend: Node.js, Express.js, Typescript
+- Authentication: JWT (JSON Web Tokens)
+- Database: MongoDB, Mongoose
 
 ## Cloning the Repositories
 

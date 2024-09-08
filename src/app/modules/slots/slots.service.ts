@@ -17,7 +17,7 @@ const getAvailableSlots = async (query: {
 
   const result = await Slot.find(queryObj).populate("service");
 
-  return result;
+  return { data: result };
 };
 
 export const slotServices = {

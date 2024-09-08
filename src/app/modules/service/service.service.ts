@@ -8,7 +8,7 @@ import { generateSlots, timeToMinutes } from "./service.utils";
 
 const createService = async (payLoad: TService) => {
   const result = await Service.create(payLoad);
-  return result;
+  return { data: result };
 };
 
 const getSingleService = async (id: string) => {
@@ -18,7 +18,7 @@ const getSingleService = async (id: string) => {
     throw new AppError(httpStatus.NOT_FOUND, "Data not found !");
   }
 
-  return result;
+  return { data: result };
 };
 
 const getAllServices = async () => {
@@ -28,7 +28,7 @@ const getAllServices = async () => {
     throw new AppError(httpStatus.NOT_FOUND, "Data not found !");
   }
 
-  return result;
+  return { data: result };
 };
 
 const updateService = async (id: string, payLoad: Partial<TService>) => {
@@ -45,7 +45,7 @@ const updateService = async (id: string, payLoad: Partial<TService>) => {
     { $set: { ...payLoad } },
     { new: true }
   );
-  return result;
+  return { data: result };
 };
 
 const deleteService = async (id: string) => {
@@ -61,7 +61,7 @@ const deleteService = async (id: string) => {
     { new: true }
   );
 
-  return result;
+  return { data: result };
 };
 
 const createSlots = async (payLoad: TSlots) => {
@@ -101,7 +101,7 @@ const createSlots = async (payLoad: TSlots) => {
   );
 
   const result = await Slot.insertMany(slots);
-  return result;
+  return { data: result };
 };
 
 export const serviceServices = {

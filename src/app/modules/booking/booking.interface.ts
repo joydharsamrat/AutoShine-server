@@ -2,8 +2,8 @@ import { Types } from "mongoose";
 
 export interface TBooking {
   customer?: Types.ObjectId;
-  service: Types.ObjectId;
-  slot: Types.ObjectId;
+  service?: Types.ObjectId;
+  slot?: Types.ObjectId;
   vehicleType:
     | "car"
     | "truck"
@@ -19,4 +19,9 @@ export interface TBooking {
   vehicleModel: string;
   manufacturingYear: number;
   registrationPlate: string;
+}
+
+export interface TBookingPayload extends TBooking {
+  serviceId?: string;
+  slotId?: string;
 }

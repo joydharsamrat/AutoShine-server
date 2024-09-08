@@ -15,7 +15,7 @@ const getBookings = async (user: JwtPayload) => {
   if (!result.length) {
     throw new AppError(httpStatus.NOT_FOUND, "No data found");
   }
-  return result;
+  return { data: result };
 };
 
 export const MyBookingServices = {
