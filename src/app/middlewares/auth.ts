@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import AppError from "../errors/appError";
-import catchAsync from "../utils/catchasync";
+import catchAsync from "../utils/catchAsync";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { User } from "../modules/user/user.model";
