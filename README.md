@@ -1,8 +1,8 @@
-# Car washing booking system
+# AutoShine
 
 ## Overview
 
-This package includes the server components of the Car washing booking system application.
+This package includes the server components of A Car washing booking system application.
 
 **[LIVE LINK](https://car-wash-booking-system-orcin.vercel.app/)**
 
