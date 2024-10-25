@@ -9,14 +9,14 @@ const router = express.Router();
 
 router.post(
   "/",
-  auth("admin"),
+  // auth("admin"),
   validateRequest(serviceValidationSchemas.createServiceValidationSchema),
   serviceControllers.handleCreateService
 );
 
-router.get("/:id", serviceControllers.handleGetSingleService);
-
 router.get("/", serviceControllers.handleGetAllServices);
+router.get("/featured", serviceControllers.handleGetFeaturedServices);
+router.get("/:id", serviceControllers.handleGetSingleService);
 
 router.put(
   "/:id",

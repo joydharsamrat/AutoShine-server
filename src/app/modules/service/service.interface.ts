@@ -4,4 +4,5 @@ export interface TService {
   price: number;
   duration: number;
   isDeleted?: boolean;
+  featured?: boolean;
 }

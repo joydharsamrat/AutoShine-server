@@ -23,6 +23,10 @@ const serviceSchema = new Schema<TService>(
       type: Boolean,
       default: false,
     },
+    featured: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

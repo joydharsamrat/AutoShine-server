@@ -6,6 +6,7 @@ const createServiceValidationSchema = z.object({
   price: z.number({ required_error: "Price is required !" }),
   duration: z.number({ required_error: "Duration is required !" }),
   isDeleted: z.boolean().optional(),
+  featured: z.boolean().optional(),
 });
 
 const updateServiceValidationSchema = z.object({
@@ -16,6 +17,7 @@ const updateServiceValidationSchema = z.object({
   price: z.number({ required_error: "Price is required !" }).optional(),
   duration: z.number({ required_error: "Duration is required !" }).optional(),
   isDeleted: z.boolean().optional(),
+  featured: z.boolean().optional(),
 });
 
 export const serviceValidationSchemas = {

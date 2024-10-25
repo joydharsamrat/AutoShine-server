@@ -31,6 +31,15 @@ const getAllServices = async () => {
   return { data: result };
 };
 
+const getFeaturedServices = async () => {
+  const result = await Service.find({ isDeleted: false, featured: true });
+  if (!result.length) {
+    throw new AppError(httpStatus.NOT_FOUND, "Data not found !");
+  }
+
+  return { data: result };
+};
+
 const updateService = async (id: string, payLoad: Partial<TService>) => {
   const service = await Service.findById(id);
 
@@ -108,6 +117,7 @@ export const serviceServices = {
   createService,
   getSingleService,
   getAllServices,
+  getFeaturedServices,
   updateService,
   deleteService,
   createSlots,

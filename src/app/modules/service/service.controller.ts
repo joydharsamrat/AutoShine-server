@@ -36,6 +36,16 @@ const handleGetAllServices = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const handleGetFeaturedServices = catchAsync(async (req, res) => {
+  const result = await serviceServices.getFeaturedServices();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Featured services retrieved successfully",
+    data: result,
+  });
+});
 
 const handleUpdateService = catchAsync(async (req, res) => {
   const { id } = req.params;
@@ -76,6 +86,7 @@ export const serviceControllers = {
   handleCreateService,
   handleGetSingleService,
   handleGetAllServices,
+  handleGetFeaturedServices,
   handleUpdateService,
   handleDeleteService,
   handleCreateSlots,
