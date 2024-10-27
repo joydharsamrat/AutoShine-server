@@ -6,6 +6,12 @@ const createReview = async (payload: TReview) => {
   return { data: result };
 };
 
+const getAllReviews = async (limit: number) => {
+  const result = await Review.find().sort("-createdAt").limit(limit);
+  return { data: result };
+};
+
 export const reviewServices = {
   createReview,
+  getAllReviews,
 };

@@ -12,5 +12,6 @@ router.post(
   validateRequest(reviewValidationSchemas.reviewValidationSchema),
   reviewControllers.handleCreateReview
 );
+router.get("/", reviewControllers.handleGetAllReviews);
 
 export const reviewRoutes = router;
