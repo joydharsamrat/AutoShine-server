@@ -4,7 +4,8 @@ import { TReview } from "./review.interface";
 const reviewSchema = new Schema<TReview>(
   {
     user: {
-      type: String,
+      type: Schema.ObjectId,
+      ref: "user",
       required: true,
     },
     review: {

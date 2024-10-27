@@ -7,7 +7,10 @@ const createReview = async (payload: TReview) => {
 };
 
 const getAllReviews = async (limit: number) => {
-  const result = await Review.find().sort("-createdAt").limit(limit);
+  const result = await Review.find()
+    .sort("-createdAt")
+    .limit(limit)
+    .populate("user", "name");
   return { data: result };
 };
 
