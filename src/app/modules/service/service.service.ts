@@ -21,12 +21,23 @@ const getSingleService = async (id: string) => {
   return { data: result };
 };
 
-const getAllServices = async () => {
-  const result = await Service.find({ isDeleted: false });
+const getAllServices = async (query: Record<string, unknown>) => {
+  let searchTerm = "";
 
-  if (!result.length) {
-    throw new AppError(httpStatus.NOT_FOUND, "Data not found !");
+  if (query.searchTerm) {
+    searchTerm = query.searchTerm as string;
   }
+
+  const searchQuery = Service.find({
+    isDeleted: false,
+    name: { $regex: searchTerm, $options: "i" },
+  });
+
+  let sort: string = "price";
+  if (query.sort) {
+    sort = query.sort as string;
+  }
+  const result = await searchQuery.sort(sort);
 
   return { data: result };
 };

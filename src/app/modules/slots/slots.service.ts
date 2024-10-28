@@ -1,12 +1,7 @@
 import { Slot } from "./slots.model";
 
-const getAvailableSlots = async (query: {
-  date?: string;
-  serviceId?: string;
-}) => {
-  const queryObj: { isBooked: string; date?: string; service?: string } = {
-    isBooked: "available",
-  };
+const getAllSlots = async (query: { date?: string; serviceId?: string }) => {
+  const queryObj: { date?: string; service?: string } = {};
 
   if (query.date) {
     queryObj.date = query.date;
@@ -19,7 +14,13 @@ const getAvailableSlots = async (query: {
 
   return { data: result };
 };
+const getSlotById = async (id: string) => {
+  const result = await Slot.findById(id).populate("service");
+
+  return { data: result };
+};
 
 export const slotServices = {
-  getAvailableSlots,
+  getAllSlots,
+  getSlotById,
 };

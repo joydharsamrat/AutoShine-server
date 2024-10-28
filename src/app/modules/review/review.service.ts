@@ -11,7 +11,24 @@ const getAllReviews = async (limit: number) => {
     .sort("-createdAt")
     .limit(limit)
     .populate("user", "name");
-  return { data: result };
+
+  const totalReviews = await Review.countDocuments();
+
+  const totalRating = await Review.aggregate([
+    {
+      $group: {
+        _id: null,
+        sum: { $sum: "$rating" },
+      },
+    },
+  ]);
+
+  const overallRating =
+    totalReviews > 0
+      ? Number((totalRating[0]?.sum / totalReviews).toFixed(1))
+      : 0;
+
+  return { data: result, overallRating, totalReviews };
 };
 
 export const reviewServices = {

@@ -16,6 +16,7 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err);
   let statusCode = err?.status || 500;
   let message = err?.message || "something went wrong !";
 
