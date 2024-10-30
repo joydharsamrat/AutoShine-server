@@ -1,8 +1,12 @@
 import { TReview } from "./review.interface";
 import { Review } from "./review.model";
 
-const createReview = async (payload: TReview) => {
-  const result = await Review.create(payload);
+const createReview = async (id: string, payload: TReview) => {
+  const review = {
+    ...payload,
+    user: id,
+  };
+  const result = await Review.create(review);
   return { data: result };
 };
 

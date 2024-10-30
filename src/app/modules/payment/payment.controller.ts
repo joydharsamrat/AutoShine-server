@@ -12,23 +12,17 @@ const handleInitiatePayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const handlePaymentSuccess = catchAsync(async (req, res) => {
-  const result = await paymentServices.payMentSuccess(req.body);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "payment  successful",
-    data: result,
-  });
+  const { pg_txnid } = req.body;
+
+  const redirectUrl = `http://localhost:5173/booking/success?transactionId=${pg_txnid}`;
+
+  res.redirect(redirectUrl);
 });
+
 const handlePaymentFail = catchAsync(async (req, res) => {
-  const result = await paymentServices.payMentFail(req.body);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "payment  successful",
-    data: result,
-  });
+  res.redirect("http://localhost:5173/booking/failed");
 });
 
 export const paymentControllers = {

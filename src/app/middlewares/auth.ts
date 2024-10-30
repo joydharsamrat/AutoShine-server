@@ -4,8 +4,9 @@ import catchAsync from "../utils/catchAsync";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { User } from "../modules/user/user.model";
+import { TUserRole } from "../modules/user/user.interface";
 
-const auth = (...roles: ["user" | "admin"]) => {
+const auth = (...roles: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
     const token = req.headers?.authorization?.split(" ")[1];
     if (!token) {

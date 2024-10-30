@@ -15,4 +15,10 @@ router.post(
 
 router.get("/", auth("admin"), bookingControllers.handleGetAllBookings);
 
+router.get(
+  "/user/:id",
+  auth("admin"),
+  bookingControllers.handleGetBookingsByUser
+);
+
 export const bookingRoutes = router;

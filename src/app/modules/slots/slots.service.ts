@@ -20,7 +20,64 @@ const getSlotById = async (id: string) => {
   return { data: result };
 };
 
+const getGroupedSlotsByService = async () => {
+  const result = await Slot.aggregate([
+    {
+      $group: {
+        _id: "$service",
+        slots: {
+          $push: {
+            _id: "$_id",
+            date: "$date",
+            startTime: "$startTime",
+            endTime: "$endTime",
+            isBooked: "$isBooked",
+            createdAt: "$createdAt",
+            updatedAt: "$updatedAt",
+          },
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "services",
+        localField: "_id",
+        foreignField: "_id",
+        as: "serviceDetails",
+      },
+    },
+    {
+      $unwind: "$serviceDetails",
+    },
+    {
+      $project: {
+        _id: 0,
+        serviceId: "$_id",
+        serviceName: "$serviceDetails.name",
+        slots: 1,
+      },
+    },
+    {
+      $sort: { serviceName: 1 },
+    },
+  ]);
+
+  return { data: result };
+};
+
+const toggleSlotStatus = async (id: string, status: { status: string }) => {
+  const result = await Slot.findByIdAndUpdate(
+    id,
+    { isBooked: status.status },
+    { new: true }
+  );
+
+  return { data: result };
+};
+
 export const slotServices = {
   getAllSlots,
   getSlotById,
+  getGroupedSlotsByService,
+  toggleSlotStatus,
 };

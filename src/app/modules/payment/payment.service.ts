@@ -6,18 +6,18 @@ const initiatePayment = async (payload: Record<string, unknown>) => {
     signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
     tran_id,
     amount,
-    currency: "BDT/USD",
+    currency: "USD",
     desc: "Test Payment",
     cus_name,
     cus_email,
     cus_phone,
-    success_url: "http://your-server.com/api/payment/success",
-    fail_url: "http://your-server.com/api/payment/fail",
-    cancel_url: "http://your-server.com/api/payment/cancel",
+    success_url: "https://auto-shine-server.vercel.app/api/v1/payment/success",
+    fail_url: "https://auto-shine-server.vercel.app/api/v1/payment/fail",
+    cancel_url: "https://auto-shine.vercel.app/",
     type: "json",
   };
 
-  const response = await fetch("https://sandbox.aamarpay.com/payment/init", {
+  const response = await fetch("https://sandbox.aamarpay.com/jsonpost.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,15 +30,6 @@ const initiatePayment = async (payload: Record<string, unknown>) => {
   return { data };
 };
 
-const payMentSuccess = async (payload: Record<string, unknown>) => {
-  return { data: payload };
-};
-const payMentFail = async (payload: Record<string, unknown>) => {
-  return { data: payload };
-};
-
 export const paymentServices = {
   initiatePayment,
-  payMentSuccess,
-  payMentFail,
 };

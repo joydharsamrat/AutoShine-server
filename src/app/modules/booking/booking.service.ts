@@ -80,13 +80,23 @@ const createBooking = async (payload: TBookingPayload, user: JwtPayload) => {
 
 const getAllBookings = async () => {
   const result = await Booking.find()
+    .sort("-createdAt")
     .populate("customer")
     .populate("service")
     .populate("slot");
   return { data: result };
 };
 
+const getBookingForByUser = async (id: string) => {
+  const result = await Booking.find({ customer: id })
+    .populate("service")
+    .populate("slot")
+    .populate("customer");
+  return { data: result };
+};
+
 export const bookingServices = {
   createBooking,
   getAllBookings,
+  getBookingForByUser,
 };

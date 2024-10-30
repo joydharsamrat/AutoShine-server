@@ -65,6 +65,7 @@ const updateService = async (id: string, payLoad: Partial<TService>) => {
     { $set: { ...payLoad } },
     { new: true }
   );
+
   return { data: result };
 };
 

@@ -6,3 +6,5 @@ export interface TUser {
   role: "user" | "admin";
   address: string;
 }
+
+export type TUserRole = "admin" | "user";

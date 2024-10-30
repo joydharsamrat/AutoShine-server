@@ -8,8 +8,8 @@ import auth from "../../middlewares/auth";
 const router = express.Router();
 
 router.post(
-  "/",
-  // auth("admin"),
+  "/create-service",
+  auth("admin"),
   validateRequest(serviceValidationSchemas.createServiceValidationSchema),
   serviceControllers.handleCreateService
 );

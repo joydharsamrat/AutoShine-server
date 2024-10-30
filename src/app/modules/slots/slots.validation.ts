@@ -5,7 +5,7 @@ const slotValidationSchema = z.object({
   date: z.string({ required_error: "Date is required !" }),
   startTime: z.string({ required_error: "Start Time is required !" }),
   endTime: z.string({ required_error: "End Time is required !" }),
-  isBooked: z.enum(["available", "booked", "canceled"]).optional(),
+  isBooked: z.enum(["available", "booked", "cancelled"]).optional(),
 });
 
 export const slotValidationSchemas = {
