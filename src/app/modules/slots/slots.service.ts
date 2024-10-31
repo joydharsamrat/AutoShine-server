@@ -14,6 +14,7 @@ const getAllSlots = async (query: { date?: string; serviceId?: string }) => {
 
   return { data: result };
 };
+
 const getSlotById = async (id: string) => {
   const result = await Slot.findById(id).populate("service");
 
