@@ -8,7 +8,7 @@ import config from "../../config";
 import { TUser } from "../user/user.interface";
 
 const userSignUp = async (payload: TUser) => {
-  const result = User.create(payload);
+  const result = await User.create(payload);
   return { data: result };
 };
 
