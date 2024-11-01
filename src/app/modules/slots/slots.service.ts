@@ -50,6 +50,12 @@ const getGroupedSlotsByService = async () => {
     {
       $unwind: "$serviceDetails",
     },
+
+    {
+      $match: {
+        "serviceDetails.isDeleted": false,
+      },
+    },
     {
       $project: {
         _id: 0,
