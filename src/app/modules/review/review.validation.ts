@@ -2,7 +2,6 @@ import { z } from "zod";
 
 // Define the Zod schema for a review
 const reviewValidationSchema = z.object({
-  user: z.string({ required_error: "User ID is required" }),
   review: z.string({ required_error: "Review is required" }),
   rating: z
     .number({ required_error: "Rating is required" })
