@@ -6,6 +6,9 @@ import bcrypt from "bcrypt";
 import createToken from "./auth.utils";
 import config from "../../config";
 import { TUser } from "../user/user.interface";
+import { sendEmail } from "../../utils/sendemail";
+import { resetPassEmailTemplate } from "../../utils/emailTemplete";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const userSignUp = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -24,7 +27,73 @@ const loginUser = async (payload: TAuth) => {
   );
 
   if (!isPasswordMatched) {
-    throw new AppError(httpStatus.UNAUTHORIZED, "Password is incorrect !");
+    throw new AppError(httpStatus.FORBIDDEN, "Incorrect password");
+  }
+
+  const jwtPayload = {
+    _id: user._id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token_secret as string,
+    config.jwt_access_expires_in as string
+  );
+
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_token_secret as string,
+    config.jwt_refresh_expires_in as string
+  );
+
+  user.password = "";
+
+  return { accessToken, refreshToken, data: user };
+};
+
+const getAccessToken = async (token: string) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_token_secret as string
+  ) as JwtPayload;
+
+  const user = await User.findById(decoded._id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found !");
+  }
+
+  if (
+    user.passwordChangedAt &&
+    User.isJwtIssuedBeforePasswordChanged(
+      user.passwordChangedAt,
+      decoded.iat as number
+    )
+  ) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "User is unauthorized");
+  }
+
+  const jwtPayload = {
+    _id: user._id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token_secret as string,
+    config.jwt_access_expires_in as string
+  );
+
+  return { accessToken };
+};
+
+const forgotPassword = async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
 
   const jwtPayload = {
@@ -36,12 +105,44 @@ const loginUser = async (payload: TAuth) => {
   const token = createToken(
     jwtPayload,
     config.jwt_access_token_secret as string,
-    "1d"
+    "10m"
   );
 
-  user.password = "";
+  const subject = "AutoShine: Reset Password";
 
-  return { token, data: user };
+  const year = new Date().getFullYear();
+
+  const resetUrl = `${config.reset_pass_url}?token=${token}`;
+
+  const template = resetPassEmailTemplate(resetUrl, year);
+
+  const result = sendEmail(template, user.email, subject);
+
+  return result;
 };
 
-export const authServices = { userSignUp, loginUser };
+const resetPassword = async (id: string, password: string) => {
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  const newPassword = await bcrypt.hash(password, Number(config.bcrypt_salts));
+
+  const result = await User.findByIdAndUpdate(id, {
+    $set: {
+      password: newPassword,
+      passwordChangedAt: new Date(),
+    },
+  });
+
+  return result;
+};
+
+export const authServices = {
+  userSignUp,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  getAccessToken,
+};

@@ -16,13 +16,13 @@ const handleInitiatePayment = catchAsync(async (req, res) => {
 const handlePaymentSuccess = catchAsync(async (req, res) => {
   const { pg_txnid } = req.body;
 
-  const redirectUrl = `http://localhost:5173/booking/success?transactionId=${pg_txnid}`;
+  const redirectUrl = `https://auto-shine.vercel.app/booking/success?transactionId=${pg_txnid}`;
 
   res.redirect(redirectUrl);
 });
 
 const handlePaymentFail = catchAsync(async (req, res) => {
-  res.redirect("http://localhost:5173/booking/failed");
+  res.redirect("https://auto-shine.vercel.app//booking/failed");
 });
 
 export const paymentControllers = {

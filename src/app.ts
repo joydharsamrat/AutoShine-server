@@ -4,13 +4,19 @@ import cors from "cors";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import router from "./app/routes";
+import cookieParser from "cookie-parser";
 
 // parsers
 app.use(express.json());
+app.use(cookieParser());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://auto-shine.vercel.app",
+];
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://auto-shine.vercel.app"],
     credentials: true,
+    origin: allowedOrigins,
   })
 );
 app.use(express.urlencoded({ extended: true }));
