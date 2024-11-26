@@ -5,7 +5,11 @@ import auth from "../../middlewares/auth";
 const router = express.Router();
 
 router.get("/", slotControllers.handleGetAvailableSlots);
-router.get("/grouped", slotControllers.handleGetGroupedSlotsByService);
+router.get(
+  "/grouped",
+  auth("admin"),
+  slotControllers.handleGetGroupedSlotsByService
+);
 
 router.get("/:id", slotControllers.handleGetSlotById);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import AppError from "../../errors/appError";
 import { Service } from "../service/service.model";
@@ -7,6 +8,7 @@ import { Slot } from "../slots/slots.model";
 import { JwtPayload } from "jsonwebtoken";
 import { User } from "../user/user.model";
 import { startSession } from "mongoose";
+import { isUpcoming } from "../../utils/isUpcoming";
 
 const createBooking = async (payload: TBookingPayload, user: JwtPayload) => {
   const { serviceId, slotId, ...rest } = payload;
@@ -77,14 +79,40 @@ const createBooking = async (payload: TBookingPayload, user: JwtPayload) => {
     throw new AppError(httpStatus.BAD_REQUEST, "Failed to book slot");
   }
 };
-
 const getAllBookings = async () => {
   const result = await Booking.find()
     .sort("-createdAt")
     .populate("customer")
     .populate("service")
     .populate("slot");
-  return { data: result };
+
+  const bookings = result.reduce(
+    (acc: any, booking: any) => {
+      const { date, startTime } = booking?.slot || {};
+
+      if (isUpcoming(date, startTime)) {
+        acc.upcoming.push(booking);
+      } else {
+        acc.past.push(booking);
+      }
+
+      return acc;
+    },
+    { upcoming: [], past: [] }
+  );
+
+  bookings.upcoming.sort((a: any, b: any) => {
+    const aDate = new Date(`${a?.slot?.date}T${a?.slot?.startTime}`);
+    const bDate = new Date(`${b?.slot?.date}T${b?.slot?.startTime}`);
+    return aDate.getTime() - bDate.getTime();
+  });
+  bookings.past.sort((a: any, b: any) => {
+    const aDate = new Date(`${a?.slot?.date}T${a?.slot?.startTime}`);
+    const bDate = new Date(`${b?.slot?.date}T${b?.slot?.startTime}`);
+    return aDate.getTime() - bDate.getTime();
+  });
+
+  return bookings;
 };
 
 const getBookingForByUser = async (id: string) => {

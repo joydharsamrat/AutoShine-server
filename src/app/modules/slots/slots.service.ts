@@ -1,3 +1,4 @@
+import { isUpcoming } from "../../utils/isUpcoming";
 import { Slot } from "./slots.model";
 
 const getAllSlots = async (query: { date?: string; serviceId?: string }) => {
@@ -12,7 +13,19 @@ const getAllSlots = async (query: { date?: string; serviceId?: string }) => {
 
   const result = await Slot.find(queryObj).populate("service");
 
-  return { data: result };
+  // Filter for upcoming slots
+  const upcomingSlots = result.filter((slot) =>
+    isUpcoming(slot.date, slot.startTime)
+  );
+
+  // Sort slots by nearest first
+  const sortedSlots = upcomingSlots.sort((a, b) => {
+    const dateTimeA = new Date(`${a.date}T${a.startTime}`);
+    const dateTimeB = new Date(`${b.date}T${b.startTime}`);
+    return dateTimeA.getTime() - dateTimeB.getTime();
+  });
+
+  return { data: sortedSlots };
 };
 
 const getSlotById = async (id: string) => {
