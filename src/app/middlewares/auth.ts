@@ -33,6 +33,14 @@ const auth = (...roles: TUserRole[]) => {
     const user = await User.findOne({ email: decoded.email });
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    } else if (
+      user.passwordChangedAt &&
+      User.isJwtIssuedBeforePasswordChanged(
+        user.passwordChangedAt,
+        decoded.iat as number
+      )
+    ) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "User is unauthorized");
     } else if (roles.length && !roles.includes(decoded.role)) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,

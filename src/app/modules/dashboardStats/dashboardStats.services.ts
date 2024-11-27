@@ -78,7 +78,6 @@ const getMonthlyBookings = async () => {
     const startOfMonthDate = subMonths(firstDayOfCurrentMonth, i);
     const endOfMonthDate = subMonths(lastDayOfCurrentMonth, i);
 
-    // Fetch bookings for the month, no need to join with services
     const bookings = await Booking.aggregate([
       {
         $match: {
@@ -89,7 +88,7 @@ const getMonthlyBookings = async () => {
         },
       },
       {
-        $count: "totalBookings", // Count the number of bookings
+        $count: "totalBookings",
       },
     ]);
 

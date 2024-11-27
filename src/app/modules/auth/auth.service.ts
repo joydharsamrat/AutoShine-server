@@ -89,6 +89,41 @@ const getAccessToken = async (token: string) => {
   return { accessToken };
 };
 
+const changePassword = async (
+  id: string,
+  payload: { newPassword: string; oldPassword: string }
+) => {
+  const user = await User.findById(id).select("+password");
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const isPasswordMatched = bcrypt.compare(payload.oldPassword, user.password);
+
+  if (!isPasswordMatched) {
+    throw new AppError(httpStatus.FORBIDDEN, "Password not matched !");
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salts)
+  );
+
+  const result = await User.findOneAndUpdate(
+    { _id: user._id, role: user.role },
+    {
+      password: hashedPassword,
+      passwordChangedAt: new Date(),
+    },
+    { new: true }
+  );
+
+  console.log(result);
+
+  return result;
+};
+
 const forgotPassword = async (email: string) => {
   const user = await User.findOne({ email });
 
@@ -142,6 +177,7 @@ const resetPassword = async (id: string, password: string) => {
 export const authServices = {
   userSignUp,
   loginUser,
+  changePassword,
   forgotPassword,
   resetPassword,
   getAccessToken,

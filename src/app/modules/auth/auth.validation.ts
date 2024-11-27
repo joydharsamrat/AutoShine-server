@@ -23,6 +23,18 @@ const refreshTokenValidationSchema = z.object({
     required_error: "Refresh token is required!",
   }),
 });
+const changePasswordValidationSchema = z.object({
+  oldPassword: z
+    .string({
+      required_error: "Refresh token is required!",
+    })
+    .min(6, "Password must be at least 6 characters"),
+  newPassword: z
+    .string({
+      required_error: "Refresh token is required!",
+    })
+    .min(6, "Password must be at least 6 characters"),
+});
 
 const forgotPasswordValidationSchema = z.object({
   email: z
@@ -37,6 +49,7 @@ export const authValidationSchemas = {
   userSignUpValidationSchema,
   userLoginValidationSchema,
   refreshTokenValidationSchema,
+  changePasswordValidationSchema,
   forgotPasswordValidationSchema,
   resetPasswordValidationSchema,
 };

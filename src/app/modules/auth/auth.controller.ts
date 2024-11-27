@@ -47,6 +47,19 @@ const handleGetAccessToken = catchAsync(async (req, res) => {
   });
 });
 
+const handleChangePassword = catchAsync(async (req, res) => {
+  const { _id } = req.user;
+
+  const result = await authServices.changePassword(_id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Password changed successfully",
+    data: result,
+  });
+});
+
 const handleForgotPassword = catchAsync(async (req, res) => {
   const result = await authServices.forgotPassword(req.body.email);
 
@@ -74,6 +87,7 @@ export const authControllers = {
   handleUserSignUp,
   handleUserLogin,
   handleGetAccessToken,
+  handleChangePassword,
   handleForgotPassword,
   handleResetPassword,
 };
