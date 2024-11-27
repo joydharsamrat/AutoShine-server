@@ -119,8 +119,6 @@ const changePassword = async (
     { new: true }
   );
 
-  console.log(result);
-
   return result;
 };
 
