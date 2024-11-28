@@ -20,6 +20,8 @@ const auth = (...roles: TUserRole[]) => {
         token,
         config.jwt_access_token_secret as string
       ) as JwtPayload;
+
+      console.log({ decoded });
     } catch (err) {
       if (err instanceof jwt.TokenExpiredError) {
         throw new AppError(httpStatus.UNAUTHORIZED, "Token has expired");
@@ -40,7 +42,10 @@ const auth = (...roles: TUserRole[]) => {
         decoded.iat as number
       )
     ) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "User is unauthorized");
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "Token is invalid due to a password change"
+      );
     } else if (roles.length && !roles.includes(decoded.role)) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,

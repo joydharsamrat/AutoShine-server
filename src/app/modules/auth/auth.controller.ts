@@ -52,11 +52,19 @@ const handleChangePassword = catchAsync(async (req, res) => {
 
   const result = await authServices.changePassword(_id, req.body);
 
+  const { accessToken, refreshToken } = result;
+
+  res.cookie("refreshToken", refreshToken, {
+    secure: config.node_ENV === "production",
+    httpOnly: true,
+    sameSite: config.node_ENV === "production" ? "none" : "lax",
+  });
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Password changed successfully",
-    data: result,
+    data: { token: accessToken },
   });
 });
 

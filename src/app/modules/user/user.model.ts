@@ -29,7 +29,7 @@ userSchema.post("save", function (doc, next) {
 
 userSchema.static(
   "isJwtIssuedBeforePasswordChanged",
-  async function (passwordChangeTimestamp: Date, jwtIssuedTimestamp: number) {
+  function (passwordChangeTimestamp: Date, jwtIssuedTimestamp: number) {
     const passwordChangesTime =
       new Date(passwordChangeTimestamp).getTime() / 1000;
     return passwordChangesTime > jwtIssuedTimestamp;
