@@ -20,8 +20,6 @@ const auth = (...roles: TUserRole[]) => {
         token,
         config.jwt_access_token_secret as string
       ) as JwtPayload;
-
-      console.log({ decoded });
     } catch (err) {
       if (err instanceof jwt.TokenExpiredError) {
         throw new AppError(httpStatus.UNAUTHORIZED, "Token has expired");
