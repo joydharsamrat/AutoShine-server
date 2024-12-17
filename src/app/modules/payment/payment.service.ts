@@ -1,19 +1,20 @@
 const initiatePayment = async (payload: Record<string, unknown>) => {
-  const { amount, tran_id, cus_name, cus_email, cus_phone } = payload;
+  const { amount, tran_id, cus_name, cus_email, cus_phone, bookingId } =
+    payload;
 
   const paymentData = {
     store_id: "aamarpaytest",
     signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
     tran_id,
     amount,
-    currency: "USD",
+    currency: "BDT",
     desc: "Test Payment",
     cus_name,
     cus_email,
     cus_phone,
     success_url: "https://auto-shine-server.vercel.app/api/v1/payment/success",
     fail_url: "https://auto-shine-server.vercel.app/api/v1/payment/fail",
-    cancel_url: "https://auto-shine.vercel.app/",
+    cancel_url: `https://auto-shine.vercel.app/${bookingId}`,
     type: "json",
   };
 

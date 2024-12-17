@@ -56,7 +56,11 @@ const createBooking = async (payload: TBookingPayload, user: JwtPayload) => {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to book slot");
     }
 
-    const bookingData = { ...payloadObj, customer: userData?._id };
+    const bookingData = {
+      ...payloadObj,
+      customer: userData?._id,
+      status: "pending",
+    };
 
     const [result] = await Booking.create([bookingData], {
       new: true,

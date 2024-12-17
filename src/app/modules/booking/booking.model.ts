@@ -17,6 +17,11 @@ const bookingSchema = new Schema<TBooking>(
       ref: "slot",
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["pending", "paid", "canceled"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );

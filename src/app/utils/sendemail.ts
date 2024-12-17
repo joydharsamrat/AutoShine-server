@@ -22,12 +22,15 @@ export const sendEmail = async (
       },
     });
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: "joydharsamrat@gmail.com",
       to: to,
       subject: subject,
       html: template,
     });
+    console.log("Email sent successfully:", info.messageId);
+
+    return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Failed to send email:", error);
     throw new AppError(httpStatus.BAD_REQUEST, "Failed to send email");

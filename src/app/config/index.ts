@@ -15,4 +15,5 @@ export default {
   sender_email: process.env.SENDER_EMAIL,
   sender_app_pass: process.env.SENDER_APP_PASS,
   reset_pass_url: process.env.RESET_PASS_URL,
+  newsletter_unsubscribe_url: process.env.NEWSLETTER_UNSUBSCRIBE_URL,
 };
